@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>En ruta</title>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        max-width: 330px;
+        padding: 15px;
+      }
+
+      .form-signin .form-floating:focus-within {
+        z-index: 2;
+      }
+
+      .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+  </head>
+  <body class="text-center py-0">
+    <div class="container h-100">
+      <main class="form-signin w-100 mx-auto">
+        
+          <h1 class="h3 mb-3 fw-normal">Buscar</h1>
+
+          <div class="form-floating mb-3">
+            <input id="buscar" type="tel" class="form-control" id="floatingInput" placeholder="Introduce texto">
+            <label for="floatingInput">Código CCIP</label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary mb-3" onclick="mostrar()">Mostrar</button>
+        
+        <ul id="resultado" class="list-group mb-3 d-none text-start">
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">Nombre</h6>
+              <small id="nombre" class="text-muted">Texto más largo para la descripción</small>
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">Camión</h6>
+              <small id="camion" class="text-muted">Texto más largo para la descripción mucho más largo</small>
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">Horario</h6>
+              <small id="horario" class="text-muted">Texto más largo para la descripción mucho más largo</small>
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">Reparto</h6>
+              <small id="reparto" class="text-muted">Texto más largo para la descripción mucho más largo</small>
+            </div>
+          </li>
+        </ul>
+        <p class="mt-5 mb-3 text-muted">&copy; vegadeyuco.com – 2022</p>
+      </main>
+    </div>
+
+    <script>
+      function mostrar()
+      {
+        fetch('https://us-central1-ruta-22662.cloudfunctions.net/datosProveedor')
+        .then(response => response.json())
+        .then(data => pinta(data));
+
+        function pinta(datos) {
+
+          var index = document.getElementById('buscar').value;
+          var index2;
+          
+          for (let i = 0; i < datos.length; i++) {
+            if (i > 0) {
+              if (datos[i].ccip == index) {
+                index2 = i;
+              }
+            }
+          }
+
+          if (index2) {
+            document.getElementById('resultado').classList.remove('d-none');
+            document.getElementById('nombre').innerHTML = '(' + datos[index2].ccip + ') ' + datos[index2].nombre;
+            document.getElementById('camion').innerHTML = datos[index2].camion;
+            document.getElementById('horario').innerHTML = datos[index2].horario;
+            document.getElementById('reparto').innerHTML = datos[index2].reparto;
+          }
+          else {
+            document.getElementById('resultado').classList.add('d-none');
+          }
+          
+          document.getElementById('buscar').value = '';
+          document.getElementById('buscar').focus();          
+        }
+      }
+    </script>
+    
+    <script>
+    document.cookie = '__session=49LRgukKQoA14gxSkEKyy9IwgH0snfbAAnacRN4w3Gsl4NcF4JGCVoSHEWCuKIey4PTeVBAgdwgi0tlY68c1MJT4ggLMNtczjT3BEGvav8leRAGIhc77Fd9MXU3i31rl4gacyRbQkKWaj619VXpK9jZBEV5JGWtLY2YU9TlCajtItfmamm4X6RDRHjY28T6cSQGjcr7c1U2y0QHgvjL6oYUfoXENvPSBzxuLgcOR4XlI3wxhcbp8DfWCvaBjkJy8';
+    </script>
+    
+    <script>
+      function getCookie(cname) {
+        let name = cname + '=';
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return '';
+      }
+
+      function checkCookie() {
+      let cvalue = getCookie('yucokie');
+      if (cvalue != '') {
+        console.log(cvalue);
+      }
+      else {
+        console.log('No cookie found!');
+        }
+      }
+    </script>
+
+  </body>
+</html>
