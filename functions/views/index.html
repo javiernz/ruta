@@ -109,6 +109,10 @@
           </div>
           <button class="w-100 btn btn-lg btn-primary mb-3" onclick="mostrar()">Mostrar</button>
         
+        <div id="spinner" class="spinner-border text-primary d-none" role="status">
+          <span class="sr-only"></span>
+        </div>
+
         <ul id="resultado" class="list-group mb-3 d-none text-start">
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
@@ -118,7 +122,7 @@
           </li>
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
-              <h6 class="my-0">Camión</h6>
+              <h6 class="my-0">Zona</h6>
               <small id="camion" class="text-muted">Texto más largo para la descripción mucho más largo</small>
             </div>
           </li>
@@ -130,7 +134,7 @@
           </li>
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
-              <h6 class="my-0">Reparto</h6>
+              <h6 class="my-0">Notas</h6>
               <small id="reparto" class="text-muted">Texto más largo para la descripción mucho más largo</small>
             </div>
           </li>
@@ -142,6 +146,9 @@
     <script>
       function mostrar()
       {
+
+        document.getElementById('spinner').classList.remove('d-none');
+
         fetch('https://us-central1-ruta-22662.cloudfunctions.net/datosProveedor')
         .then(response => response.json())
         .then(data => pinta(data));
@@ -164,20 +171,25 @@
             document.getElementById('nombre').innerHTML = '(' + datos[index2].ccip + ') ' + datos[index2].nombre;
             document.getElementById('camion').innerHTML = datos[index2].camion;
             document.getElementById('horario').innerHTML = datos[index2].horario;
-            document.getElementById('reparto').innerHTML = datos[index2].reparto;
+            document.getElementById('reparto').innerHTML = notUndefined(datos[index2].reparto);
+
+            document.getElementById('spinner').classList.add('d-none');
           }
           else {
             document.getElementById('resultado').classList.add('d-none');
+            document.getElementById('spinner').classList.add('d-none');
           }
           
           document.getElementById('buscar').value = '';
           document.getElementById('buscar').focus();          
         }
+
+        function notUndefined(string) {
+          if (string == null) {
+            return '';
+          }
+        }
       }
-    </script>
-    
-    <script>
-    document.cookie = '__session=49LRgukKQoA14gxSkEKyy9IwgH0snfbAAnacRN4w3Gsl4NcF4JGCVoSHEWCuKIey4PTeVBAgdwgi0tlY68c1MJT4ggLMNtczjT3BEGvav8leRAGIhc77Fd9MXU3i31rl4gacyRbQkKWaj619VXpK9jZBEV5JGWtLY2YU9TlCajtItfmamm4X6RDRHjY28T6cSQGjcr7c1U2y0QHgvjL6oYUfoXENvPSBzxuLgcOR4XlI3wxhcbp8DfWCvaBjkJy8';
     </script>
     
     <script>
@@ -197,7 +209,7 @@
       }
 
       function checkCookie() {
-      let cvalue = getCookie('yucokie');
+      let cvalue = getCookie('__session');
       if (cvalue != '') {
         console.log(cvalue);
       }

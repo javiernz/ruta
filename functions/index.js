@@ -22,65 +22,32 @@ firebase.initializeApp();
 
 exports.index = functions.https.onRequest(async(req, res) => {
 
-  const currentCookie = 'RMrl74VcDC4zK6uLd3pgw6uC1vS0ihXrS5qCloFRLkvUEPWDFTcArauVH6R3IXv5fzujSJeFaFSAtlTYvXy0o1TURJrDt1YJcKAgKgdHxJFo6uA93sMSQJqKSb2m3NmVRI3w0nFctev6Lg6kdh18KwPea83dSuGTKMuDMyorv9FTQUVDTRqdItshsalmBsEvLrkkAADWIYGDAIDniluhupVL1gqh1Tobxvk0rk0qjXLd8RjlYgUh6usMIwA3eJix';
+  var currentCookie;
+
+  if (req.headers.cookie) {
+    currentCookie = cookie.parse(req.headers.cookie).__session;
+  }
+  else {
+    currentCookie = '29YkLYH0Hp9Hw8x1LQb5pk1zBAL2WNPnbOo7Nmi3p7iMxVxpnds6X51Tu5wYlxjcRRPS5iQSHXpczqOiECkt6C3J6fCN6rLzxBsBpveBqTTJtmIznQRKwYWH5PrniiWknjZ7EzoYDHunR5m1u6NV3D6CvsWKhECf3noU2V7qZanvCn0vkKSYMsvUi0V9Ho1VGdaiK774qNRxngUPDsw2lgS3JgeJfbB7ditJ65zkjFSPz6L9sNtM69DuQ9qCVMUz';
+    // currentCookie = 'temp';
+  }
 
   const dbRef = firebase.database().ref();
 
-  var chacho;
+  var mustLogin;
 
   dbRef.child('cookie').orderByChild('__session').equalTo(currentCookie).on('value' , function(snapshot) {
     snapshot.forEach(function(data) {
-      chacho = data.key;
-      console.log(chacho);
+      mustLogin = data.key;
     });
 
-    if (chacho != null) {
+    if (mustLogin != null) {
       res.sendFile(dir + 'index.html');
     }
     else {
       res.sendFile(dir + 'login.html');
     }  
   });
-
-  /*
-
-  dbRef.child('cookie').orderByValue().equalTo(currentCookie).on('value', function(snapshot) {
-    snapshot.forEach(function(data) {
-      chacho = data.key;
-    });
-
-    if (chacho != null) {
-      res.sendFile(dir + 'index.html');
-    }
-    else {
-      res.sendFile(dir + 'login.html');
-    }  
-  });
-
-
-
-  ref.child('users').orderByChild('name').equalTo('John Doe').on("value", function(snapshot) {
-      console.log(snapshot.val());
-      snapshot.forEach(function(data) {
-          console.log(data.key);
-      });
-  });
-  */
-
-  /*
-  dbRef.child(`cookie/${currentCookie}`).get().then((snapshot) => {
-
-    if (snapshot.exists()) {
-      //console.log(snapshot.val());
-      res.sendFile(dir + 'index.html')
-    } else {
-      //console.log('No data available');
-      res.json('Datos no disponibles');
-    }
-  }).catch((error) => {
-    console.error(error);
-  });
-  */
 });
 
 // Take the id parameter passed to this HTTP endpoint and return 
@@ -101,28 +68,33 @@ exports.datosProveedor = functions.https.onRequest(async(req, res) => {
     });
 });
 
-// Take the id parameter passed to this HTTP endpoint and return 
-// Realtime database object under the path /proveedores/:documentId/id
+// Check for valid password
 exports.checkPassword = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
+
+    var currentCookie;
+  
+    if (req.headers.cookie) {
+      currentCookie = cookie.parse(req.headers.cookie).__session;
+    }
+    else {
+      currentCookie = 'temp';
+    }
+
     if (req.body.password === process.env.PASSWORD) {
-      if (cookie.parse(req.headers.cookie).__session != '') {
-        const stateCookie = cookie.parse(req.headers.cookie).__session
-        console.log(cookie.parse(req.headers.cookie).__session);
-        res.send(stateCookie);
-      }
-      else {
+      
+      const __session = makeCookie(256);
 
-        const __session = makeCookie(256);
-
-        const db = firebase.database().ref('cookie/' + __session);
+      const db = firebase.database().ref('cookie/' + __session);
         
-        db.set({
-          __session
-        });
-
-        res.json(__session);
-      }
+      db.set({
+        __session
+      });
+        
+      //res.json(__session);
+      res.cookie('__session', __session)
+      res.writeHead(200, { 'Content-Type':'text/html'});
+      res.end(`"<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url='https://us-central1-ruta-22662.cloudfunctions.net/index'" /></head></body></html>"`);
     }
     else {
       res.redirect('index?p=no')
