@@ -1,4 +1,11 @@
 // Document elements
+const ficha = document.getElementById('ficha');
+const ccip = document.getElementById('ccip');
+const nombre = document.getElementById('nombre');
+const zona = document.getElementById('zona');
+const horario = document.getElementById('horario');
+const notas = document.getElementById('notas');
+
 const startRsvpButton = document.getElementById('startRsvp');
 
 const form = document.getElementById('formBuscar');
@@ -10,6 +17,7 @@ const rsvpNo = document.getElementById('rsvp-no');
 
 let rsvpListener = null;
 let guestbookListener = null;
+let currentProveedor = null;
 
 const firebaseConfig = {
   apiKey: "AIzaSyAzkMbo9CgQb-8PFm6ZZGIAQMD2Rr617Dw",
@@ -72,14 +80,15 @@ auth.onAuthStateChanged((user) => {
     form.classList.remove('d-none');
     startRsvpButton.classList.add('d-none');
     // Subscribe to the guestbook collection
-    subscribeGuestbook();
+    // subscribeGuestbook();
   } 
   else {
     startRsvpButton.textContent = 'Iniciar Sesión';
     form.classList.add('d-none');
     startRsvpButton.classList.remove('d-none');
+    ficha.classList.add('d-none');
     // Unsubscribe from the guestbook collection
-    unsubscribeGuestbook();
+    // unsubscribeGuestbook();
   }
 });
 
@@ -87,19 +96,37 @@ auth.onAuthStateChanged((user) => {
 form.addEventListener('submit', async (e) => {
   // Prevent the default form redirect
   e.preventDefault();
-  // Write a new message to the database collection "guestbook"
-  addDoc(collection(db, 'guestbook'), {
-    text: input.value,
-    timestamp: Date.now(),
-    name: auth.currentUser.displayName,
-    userId: auth.currentUser.uid,
-  });
   // clear message input field
-  input.value = '';
+  //input.value = '';
+  currentProveedor = ccip.value;
+
+  var docRef = db.collection('proveedores').doc(currentProveedor);
+
+  docRef.get().then((doc) => {
+      if (doc.exists) {
+          nombre.innerHTML = '(' + currentProveedor + ') ' + doc.data().nombre;
+          zona.innerHTML = doc.data().zona;
+          horario.innerHTML = doc.data().horario;
+          notas.innerHTML = doc.data().notas;
+          ficha.classList.remove('d-none');
+      } else {
+          // doc.data() will be undefined in this case
+          console.log('No such document!');
+          ficha.classList.add('d-none');
+      }
+  }).catch((error) => {
+      console.log('Error getting document:', error);
+      ficha.classList.add('d-none');
+  });
+
+  // Empty input
+  ccip.value = '';
+
   // Return false to avoid redirect
   return false;
 });
 
+/*
 // Create query for messages
 const q = query(collection(db, 'guestbook'), orderBy('timestamp', 'desc'));
 onSnapshot(q, (snaps) => {
@@ -113,7 +140,9 @@ onSnapshot(q, (snaps) => {
     guestbook.appendChild(entry);
   });
 });
+*/
 
+/*
 // Listen to guestbook updates
 function subscribeGuestbook() {
   const q = db.query(db.collection('guestbook').orderBy('timestamp', 'desc'));
@@ -129,11 +158,4 @@ function subscribeGuestbook() {
     });
   });
 }
-
-// Unsubscribe from guestbook updates
-function unsubscribeGuestbook() {
-  if (guestbookListener != null) {
-    guestbookListener();
-    guestbookListener = null;
-  }
-}
+*/
