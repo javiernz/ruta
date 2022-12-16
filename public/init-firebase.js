@@ -20,14 +20,14 @@ let guestbookListener = null;
 let currentProveedor = null;
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAzkMbo9CgQb-8PFm6ZZGIAQMD2Rr617Dw",
-  authDomain: "ruta-22662.firebaseapp.com",
-  databaseURL: "https://ruta-22662-default-rtdb.europe-west1.firebasedatabase.app",
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
   projectId: "ruta-22662",
-  storageBucket: "ruta-22662.appspot.com",
-  messagingSenderId: "601490990574",
-  appId: "1:601490990574:web:3c57866fe6b51192259aff",
-  measurementId: "G-WFW0EKRE2E"
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
 };
   
 firebase.initializeApp(firebaseConfig);
