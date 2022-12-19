@@ -73,6 +73,7 @@ startRsvpButton.addEventListener('click', () => {
   }
 });
 
+/*
 // Listen to the current Auth state
 auth.onAuthStateChanged((user) => {
   if (user) {
@@ -87,6 +88,7 @@ auth.onAuthStateChanged((user) => {
     ficha.classList.add('d-none');
   }
 });
+*/
 
 // Listen to the form submission
 form.addEventListener('submit', async (e) => {
