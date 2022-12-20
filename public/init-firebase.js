@@ -18,18 +18,6 @@ const rsvpNo = document.getElementById('rsvp-no');
 let rsvpListener = null;
 let guestbookListener = null;
 let currentProveedor = null;
-
-// Config firebase project
-const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  databaseURL: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: "",
-  measurementId: ""
-};
   
 firebase.initializeApp(firebaseConfig);
 
