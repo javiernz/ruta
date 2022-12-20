@@ -23,7 +23,7 @@ const firebaseConfig = {
   apiKey: "",
   authDomain: "",
   databaseURL: "",
-  projectId: "ruta-22662",
+  projectId: "",
   storageBucket: "",
   messagingSenderId: "",
   appId: "",
