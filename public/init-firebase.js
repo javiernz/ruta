@@ -19,6 +19,7 @@ let rsvpListener = null;
 let guestbookListener = null;
 let currentProveedor = null;
 
+// Config firebase project
 const firebaseConfig = {
   apiKey: "",
   authDomain: "",
