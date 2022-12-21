@@ -25,46 +25,37 @@
           <section id="firebaseui-auth-container"></section>
 
           <form id="formBuscar">
-            <h1 class="h3 mb-3 fw-normal">Buscar</h1>
-        
+            <h1 class="h3 mb-3 fw-normal">Editar</h1>
             <div class="form-floating mb-3">
               <input type="tel" class="form-control" id="ccip" placeholder="name@example.com">
               <label for="floatingInput">CCIP</label>
             </div>
-
             <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Buscar</button>
-
-            <ul id="ficha" class="list-group mb-3 text-start">
-              <li class="list-group-item d-flex justify-content-between lh-sm">
-                <div>
-                  <h6 class="my-0">Nombre</h6>
-                  <small id="nombre" class="text-muted"></small>
-                </div>
-              </li>
-              <li class="list-group-item d-flex justify-content-between lh-sm">
-                <div>
-                  <h6 class="my-0">Zona</h6>
-                  <small id="zona" class="text-muted"></small>
-                </div>
-              </li>
-              <li class="list-group-item d-flex justify-content-between lh-sm">
-                <div>
-                  <h6 class="my-0">Horario</h6>
-                  <small id="horario" class="text-muted"></small>
-                </div>
-              </li>
-              <li class="list-group-item d-flex justify-content-between lh-sm">
-                <div>
-                  <h6 class="my-0">Notas</h6>
-                  <small id="notas" class="text-muted"></small>
-                </div>
-              </li>
-            </ul>
-
-            <p class="mt-5 mb-3 text-muted text-center">&copy; SyM</p>
           </form>
 
-           <section id="guestbook"></section>
+          <form id="fichaeditar" class="d-none">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="zona" class="form-label">Zona</label>
+              <input type="text" class="form-control" id="zona">
+            </div>
+            <div class="mb-3">
+              <label for="horario" class="form-label">Horario</label>
+              <input type="text" class="form-control" id="horario" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="notas" class="form-label">Notas</label>
+              <input type="text" class="form-control" id="notas">
+            </div>
+            <button class="w-100 btn btn-lg btn-success mb-3" type="submit">Actualizar</button>
+          </form>
+
+          <p id="correctamente" class="mt-5 mb-3 text-success text-center d-none">Actualizado correctamente</p>
+
+          <p class="mt-5 mb-3 text-muted text-center">&copy; 2022 Servicio y Mantenimiento </p>
         </main>
       </div>
 
@@ -75,5 +66,6 @@
 
         <script src="./config.js"></script>
         <script src="./init-firebase.js"></script>
+        <script src="./edit.js"></script>
   </body>
 </html>
