@@ -50,22 +50,21 @@ startRsvpButton.addEventListener('click', () => {
   }
 });
 
-/*
+
 // Listen to the current Auth state
 auth.onAuthStateChanged((user) => {
   if (user) {
     startRsvpButton.textContent = 'Cerrar Sesión';
-    form.classList.remove('d-none');
+    formBuscar.classList.remove('d-none');
     startRsvpButton.classList.add('d-none');
   } 
   else {
     startRsvpButton.textContent = 'Iniciar Sesión';
-    form.classList.add('d-none');
+    formBuscar.classList.add('d-none');
     startRsvpButton.classList.remove('d-none');
-    ficha.classList.add('d-none');
   }
 });
-*/
+
 
 // Listen to the form submission
 fichaeditar.addEventListener('submit', async (e) => {
