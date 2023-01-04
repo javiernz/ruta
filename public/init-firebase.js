@@ -4,6 +4,7 @@ const ccip = document.getElementById('ccip');
 const nombre = document.getElementById('nombre');
 const zona = document.getElementById('zona');
 const horario = document.getElementById('horario');
+const reparto = document.getElementById('reparto');
 const notas = document.getElementById('notas');
 const form = document.getElementById('formBuscar');
 
@@ -21,19 +22,24 @@ form.addEventListener('submit', async (e) => {
   // Prevent the default form redirect
   e.preventDefault();
 
+  if (!ccip) {
+    return
+  }
+
   // Set current Proveedor from input field
   currentProveedor = ccip.value;
 
   // Set database ref from current Proveedor variable
   var docRef = db.collection('proveedores').doc(currentProveedor);
 
-  // If document exists, return data to html table, if not, return erro
+  // If document exists, return data to html table, if not, return error
   docRef.get().then((doc) => {
       if (doc.exists) {
         if (ficha) {
             nombre.innerHTML = '(' + currentProveedor + ') ' + doc.data().nombre;
             zona.innerHTML = doc.data().zona;
             horario.innerHTML = doc.data().horario;
+            reparto.innerHTML = doc.data().reparto;
             notas.innerHTML = doc.data().notas;
             ficha.classList.remove('d-none');
         }
@@ -41,6 +47,7 @@ form.addEventListener('submit', async (e) => {
             nombre.value = doc.data().nombre;
             zona.value = doc.data().zona;
             horario.value = doc.data().horario;
+            reparto.value = doc.data().reparto;
             notas.value = doc.data().notas;
             fichaeditar.classList.remove('d-none');
         }
